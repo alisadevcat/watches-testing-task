@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/alisadevcat/watches-testing-task/static/css/main.6a178d08.css",
+    "main.js": "/alisadevcat/watches-testing-task/static/js/main.46839a57.js",
+    "static/js/787.d711c9e4.chunk.js": "/alisadevcat/watches-testing-task/static/js/787.d711c9e4.chunk.js",
+    "index.html": "/alisadevcat/watches-testing-task/index.html",
+    "main.6a178d08.css.map": "/alisadevcat/watches-testing-task/static/css/main.6a178d08.css.map",
+    "main.46839a57.js.map": "/alisadevcat/watches-testing-task/static/js/main.46839a57.js.map",
+    "787.d711c9e4.chunk.js.map": "/alisadevcat/watches-testing-task/static/js/787.d711c9e4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6a178d08.css",
+    "static/js/main.46839a57.js"
+  ]
+}
