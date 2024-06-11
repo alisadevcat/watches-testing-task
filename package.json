@@ -1,8 +1,7 @@
 {
   "name": "watches-testing-task",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://github.com/alisadevcat/Watches-Testing-Task",
+  "homepage": "https://github.com/alisadevcat/watches-testing-task/",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^5.17.0",
