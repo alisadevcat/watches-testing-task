@@ -13,74 +13,47 @@ const formatTime = (d, isUtc) => {
   return date;
 };
 
-const checkIfSecondsAreRound = (time) => {
-  return time.endsWith("0");
-};
-
-const handleTimesImageChanged = (changetTime, time) => {
-  const variants = {
-    2: ['30','00'],
-    3: ['20','40','00'],
-    4: ['15', '30', '45', '60'],
-    5: ['12', '24', '36', '48', '60'],
-    6: ['10', '20', '30', '40', '50', '60']
-  }
- return variants[changetTime];
-};
-
 export default function App() {
-  const [time, setTime] = useState(formatTime(new Date()));
+  const [displayedTime, setDisplayedTime] = useState(formatTime(new Date()));
   const [isUTC, setIsUTC] = useState(false);
-  const [isRound, setIsRound] = useState(false);
-  const [changeImageTime, setChangeImageTime] = useState(1);
+  const [timesImageChange, setTimesImageChange] = useState(1);
   const [url, setUrl] = useState("https://picsum.photos/200/300");
   const checkedValue = isUTC ? "checked" : "";
 
   useEffect(() => {
     const myTimeout = setInterval(() => {
-      const formatedTime = formatTime(new Date(Date.now()), isUTC);
-      setTime(formatedTime);
-      setIsRound(checkIfSecondsAreRound(time));
+      const currentTime = new Date(Date.now());
+      const formatedTime = formatTime(currentTime, isUTC);
+      setDisplayedTime(formatedTime);
     }, 1000);
 
     return () => {
       clearInterval(myTimeout);
     };
-  }, [isUTC, time]);
-
+  }, [isUTC, displayedTime]);
 
   useEffect(() => {
-  
-    if (changeImageTime === 1) {
-      if (isRound) {
-        fetch("https://picsum.photos/200/300").then((data) => {
-          setUrl(data.url);
-        });
-      } 
-    } else {
-    const seconds = handleTimesImageChanged(changeImageTime, time);
-    
-    seconds.forEach((sec)=>{
-      if(time.endsWith(`${sec}`)){
-        fetch("https://picsum.photos/200/300").then((data) => {
-          setUrl(data.url);
-        });
-      };
-    })
-    }
-  }, [changeImageTime, time, isRound]);
+    const intervalMs = (60 / timesImageChange) * 1000; // Convert minutes to milliseconds
+    const intervalId = setInterval(() => {
+      fetch("https://picsum.photos/200/300").then((data) => {
+        setUrl(data.url);
+      });
+    }, intervalMs);
+
+    return () => clearInterval(intervalId);
+  }, [timesImageChange]);
 
   const handleCheckbox = () => {
     setIsUTC(!isUTC);
   };
 
   const handleSelect = (e) => {
-    setChangeImageTime(e.target.value);
+    setTimesImageChange(e.target.value);
   };
 
   return (
     <div className="container column ">
-      <div className="heading-1">{time}</div>
+      <div className="heading-1">{displayedTime}</div>
 
       <div className="pt-1">
         <label htmlFor="utc-checkbox">Switch to UTC</label>
@@ -110,3 +83,41 @@ export default function App() {
     </div>
   );
 }
+
+// console.log(60000 / Number(timesImageChange));
+// timeNew = timeNew + (60000 / Number(timesImageChange));
+
+// console.log( timeNew, secs, variants[timesImageChange], count);
+//console.log(formatTime(new Date(Date.now()), isUTC), displayedTime, timeNew, formatTime(timeNew, isUTC));
+
+// if (
+//   formatTime(new Date(Date.now()), isUTC) === formatTime(timeNew, isUTC)
+// ) {
+//   fetch("https://picsum.photos/200/300").then((data) => {
+//     setUrl(data.url);
+//   });
+// }
+
+// useEffect(() => {
+//   let count = Number(timesImageChange);
+//   let timeNew = time;
+//   // const secs = variants[timesImageChange];
+//   console.log(formatTime(timeNew, isUTC), time, "original", timesImageChange);
+
+//   const handleTimesChange = () => {
+//     // const delay = 60000 / Number(timesImageChange);
+
+//     while (count) {
+//       timeNew += 20000;
+
+//       if (displayedTime === formatTime(timeNew, isUTC)) {
+//         fetch("https://picsum.photos/200/300").then((data) => {
+//           setUrl(data.url);
+//         });
+//       }
+//       count--;
+//     }
+//   };
+
+//   handleTimesChange();
+// }, [timesImageChange, time, isUTC]);
