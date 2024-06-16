@@ -21,14 +21,14 @@ export default function App() {
   const checkedValue = isUTC ? "checked" : "";
 
   useEffect(() => {
-    const myTimeout = setInterval(() => {
+    const myTimeout = setTimeout(() => {
       const currentTime = new Date(Date.now());
       const formatedTime = formatTime(currentTime, isUTC);
       setDisplayedTime(formatedTime);
     }, 1000);
 
     return () => {
-      clearInterval(myTimeout);
+      clearTimeout(myTimeout);
     };
   }, [isUTC, displayedTime]);
 
