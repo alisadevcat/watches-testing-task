@@ -21,16 +21,17 @@ export default function App() {
   const checkedValue = isUTC ? "checked" : "";
 
   useEffect(() => {
-    const myTimeout = setTimeout(() => {
+   const myTimeout = setInterval(() => {
       const currentTime = new Date(Date.now());
       const formatedTime = formatTime(currentTime, isUTC);
       setDisplayedTime(formatedTime);
-    }, 1000);
-
+    });
+ 
     return () => {
       clearTimeout(myTimeout);
     };
-  }, [isUTC, displayedTime]);
+  });
+
 
   useEffect(() => {
     const intervalMs = (60 / timesImageChange) * 1000; // Convert minutes to milliseconds
