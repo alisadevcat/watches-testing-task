@@ -14,17 +14,26 @@ const formatTime = (d, isUtc) => {
 };
 
 export default function App() {
-  const [displayedTime, setDisplayedTime] = useState(formatTime(new Date()));
+  const [displayedTime, setDisplayedTime] = useState(formatTime(Date.now()));
   const [isUTC, setIsUTC] = useState(false);
   const [timesImageChange, setTimesImageChange] = useState(1);
   const [url, setUrl] = useState("https://picsum.photos/200/300");
 
   useEffect(() => {
+    const startTime = Date.now(); //not changed
+    let totalTime = 0;
+    let delay = 1000;
+
     const myTimeout = setInterval(() => {
-      const currentTime = new Date(Date.now());
-      const formatedTime = formatTime(currentTime, isUTC);
-      setDisplayedTime(formatedTime);
-    });
+      const elapsedTime = Date.now() - startTime; //how much time really have gone  = 1001/1000
+
+      totalTime += 1000; //how much should have gone - 1000
+
+      const difference = elapsedTime - totalTime; //
+       delay = delay - difference;
+       
+      setDisplayedTime(formatTime(Date.now() + difference, isUTC));
+    }, delay);
 
     return () => {
       clearTimeout(myTimeout);
@@ -45,6 +54,7 @@ export default function App() {
   const handleCheckbox = (e) => {
     e.preventDefault();
     setIsUTC(!isUTC);
+    setDisplayedTime(formatTime(Date.now(), isUTC));
   };
 
   const handleSelect = (e) => {
