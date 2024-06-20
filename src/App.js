@@ -1,5 +1,8 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import { ImageComponent } from "./ImageComponent";
+import { SelectTimesImageChange } from "./SelectTimesImageChange";
+import { Checkbox } from "./Checkbox";
 
 const formatTime = (d, isUtc) => {
   let date;
@@ -11,44 +14,6 @@ const formatTime = (d, isUtc) => {
     date = date.slice(11, 20);
   }
   return date;
-};
-
-const Checkbox = ({ isUTC, handleCheckbox }) => {
-  return (
-    <div className="pt-1">
-      <label htmlFor="utc-checkbox">Switch to UTC</label>
-      <input
-        type="checkbox"
-        className="utc-checkbox"
-        checked={isUTC}
-        name="utc"
-        onChange={handleCheckbox}
-      />
-    </div>
-  );
-};
-
-const SelectTimesImageChange = ({ handleSelect }) => {
-  return (
-    <select className="control" onChange={handleSelect}>
-      <option value="1" defaultValue>
-        1 time
-      </option>
-      <option value="2">2 times</option>
-      <option value="3">3 times</option>
-      <option value="4">4 times</option>
-      <option value="5">5 times</option>
-      <option value="6">6 times</option>
-    </select>
-  );
-};
-
-const ImageComponent = ({ url }) => {
-  return (
-    <div className="img">
-      <img src={url} alt="img" />
-    </div>
-  );
 };
 
 export default function App() {
