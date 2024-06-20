@@ -13,6 +13,44 @@ const formatTime = (d, isUtc) => {
   return date;
 };
 
+const Checkbox = ({ isUTC, handleCheckbox }) => {
+  return (
+    <div className="pt-1">
+      <label htmlFor="utc-checkbox">Switch to UTC</label>
+      <input
+        type="checkbox"
+        className="utc-checkbox"
+        checked={isUTC}
+        name="utc"
+        onChange={handleCheckbox}
+      />
+    </div>
+  );
+};
+
+const SelectTimesImageChange = ({ handleSelect }) => {
+  return (
+    <select className="control" onChange={handleSelect}>
+      <option value="1" defaultValue>
+        1 time
+      </option>
+      <option value="2">2 times</option>
+      <option value="3">3 times</option>
+      <option value="4">4 times</option>
+      <option value="5">5 times</option>
+      <option value="6">6 times</option>
+    </select>
+  );
+};
+
+const ImageComponent = ({ url }) => {
+  return (
+    <div className="img">
+      <img src={url} alt="img" />
+    </div>
+  );
+};
+
 export default function App() {
   const [displayedTime, setDisplayedTime] = useState(formatTime(Date.now()));
   const [isUTC, setIsUTC] = useState(false);
@@ -28,9 +66,9 @@ export default function App() {
       const elapsedTime = Date.now() - startTime; //how much time really have gone  = 1001/1000
 
       totalTime += 1000; //how much should have gone - 1000
-      
-      const difference = elapsedTime - totalTime; 
-       delay -= difference;
+
+      const difference = elapsedTime - totalTime;
+      delay -= difference;
 
       setDisplayedTime(formatTime(Date.now(), isUTC));
     }, delay);
@@ -43,12 +81,12 @@ export default function App() {
   useEffect(() => {
     const startTime = Date.now();
     let totalInterval = 0;
-  
-   let intervalMs = (60 / timesImageChange) * 1000; // Convert minutes to milliseconds
-   
+
+    let intervalMs = (60 / timesImageChange) * 1000; // Convert minutes to milliseconds
+
     const intervalId = setInterval(() => {
       const elapsedTime = Date.now() - startTime;
-      totalInterval+= intervalMs;
+      totalInterval += intervalMs;
       intervalMs -= elapsedTime - totalInterval;
       fetch("https://picsum.photos/200/300").then((data) => {
         setUrl(data.url);
@@ -68,42 +106,15 @@ export default function App() {
     setTimesImageChange(e.target.value);
   };
 
-  const Checkbox = () => {
-    return (
-      <div className="pt-1">
-        <label htmlFor="utc-checkbox">Switch to UTC</label>
-        <input
-          type="checkbox"
-          className="utc-checkbox"
-          checked={isUTC}
-          name="utc"
-          onChange={handleCheckbox}
-        />
-      </div>
-    );
-  };
-
-
   return (
     <div className="container column">
       <div className="heading-1">{displayedTime}</div>
 
-      <Checkbox />
+      <Checkbox isUTC={isUTC} handleCheckbox={handleCheckbox} />
 
-      <div className="img">
-        <img src={url} alt="img" />
-      </div>
+      <ImageComponent url={url} />
 
-      <select className="control" onChange={handleSelect}>
-        <option value="1" defaultValue>
-          1 time
-        </option>
-        <option value="2">2 times</option>
-        <option value="3">3 times</option>
-        <option value="4">4 times</option>
-        <option value="5">5 times</option>
-        <option value="6">6 times</option>
-      </select>
+      <SelectTimesImageChange handleSelect={handleSelect} />
     </div>
   );
 }
