@@ -28,11 +28,11 @@ export default function App() {
       const elapsedTime = Date.now() - startTime; //how much time really have gone  = 1001/1000
 
       totalTime += 1000; //how much should have gone - 1000
+      
+      const difference = elapsedTime - totalTime; 
+       delay -= difference;
 
-      const difference = elapsedTime - totalTime; //
-       delay = delay - difference;
-       
-      setDisplayedTime(formatTime(Date.now() + difference, isUTC));
+      setDisplayedTime(formatTime(Date.now(), isUTC));
     }, delay);
 
     return () => {
@@ -41,8 +41,15 @@ export default function App() {
   });
 
   useEffect(() => {
-    const intervalMs = (60 / timesImageChange) * 1000; // Convert minutes to milliseconds
+    const startTime = Date.now();
+    let totalInterval = 0;
+  
+   let intervalMs = (60 / timesImageChange) * 1000; // Convert minutes to milliseconds
+   
     const intervalId = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      totalInterval+= intervalMs;
+      intervalMs -= elapsedTime - totalInterval;
       fetch("https://picsum.photos/200/300").then((data) => {
         setUrl(data.url);
       });
@@ -58,7 +65,6 @@ export default function App() {
   };
 
   const handleSelect = (e) => {
-    e.preventDefault();
     setTimesImageChange(e.target.value);
   };
 
@@ -77,8 +83,17 @@ export default function App() {
     );
   };
 
-  const TimesSelect = () => {
-    return (
+
+  return (
+    <div className="container column">
+      <div className="heading-1">{displayedTime}</div>
+
+      <Checkbox />
+
+      <div className="img">
+        <img src={url} alt="img" />
+      </div>
+
       <select className="control" onChange={handleSelect}>
         <option value="1" defaultValue>
           1 time
@@ -89,20 +104,6 @@ export default function App() {
         <option value="5">5 times</option>
         <option value="6">6 times</option>
       </select>
-    );
-  };
-
-  return (
-    <div className="container columna">
-      <div className="heading-1">{displayedTime}</div>
-
-      <Checkbox />
-
-      <div className="img">
-        <img src={url} alt="img" />
-      </div>
-
-      <TimesSelect />
     </div>
   );
 }
