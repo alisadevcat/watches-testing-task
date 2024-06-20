@@ -17,31 +17,20 @@ const formatTime = (d, isUtc) => {
 };
 
 export default function App() {
-  const [displayedTime, setDisplayedTime] = useState(formatTime(Date.now()));
+  const [displayedTime, setDisplayedTime] = useState(Date.now());
   const [isUTC, setIsUTC] = useState(false);
   const [timesImageChange, setTimesImageChange] = useState(1);
   const [url, setUrl] = useState("https://picsum.photos/200/300");
 
   useEffect(() => {
-    const startTime = Date.now(); //not changed
-    let totalTime = 0;
-    let delay = 1000;
-
-    const myTimeout = setInterval(() => {
-      const elapsedTime = Date.now() - startTime; //how much time really have gone  = 1001/1000
-
-      totalTime += 1000; //how much should have gone - 1000
-
-      const difference = elapsedTime - totalTime;
-      delay -= difference;
-
-      setDisplayedTime(formatTime(Date.now(), isUTC));
-    }, delay);
+    const myTimeout = setTimeout(() => {
+      setDisplayedTime(Date.now());
+    }, 1000);
 
     return () => {
       clearTimeout(myTimeout);
     };
-  });
+  }, []);
 
   useEffect(() => {
     const startTime = Date.now();
@@ -62,9 +51,8 @@ export default function App() {
   }, [timesImageChange]);
 
   const handleCheckbox = (e) => {
-    e.preventDefault();
-    setIsUTC(!isUTC);
-    setDisplayedTime(formatTime(Date.now(), isUTC));
+    setIsUTC((prev)=>!prev);
+    setDisplayedTime(Date.now());
   };
 
   const handleSelect = (e) => {
@@ -73,7 +61,7 @@ export default function App() {
 
   return (
     <div className="container column">
-      <div className="heading-1">{displayedTime}</div>
+      <div className="heading-1">{formatTime(displayedTime, isUTC)}</div>
 
       <Checkbox isUTC={isUTC} handleCheckbox={handleCheckbox} />
 
