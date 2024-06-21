@@ -11,23 +11,31 @@ const formatTime = (d, isUtc) => {
 export const TimeAndCheckbox = () => {
   const [displayedTime, setDisplayedTime] = useState(new Date());
   const [isUTC, setIsUTC] = useState(false);
+  const [count, setCount] = useState(0);
+  const [delay, setDelay] = useState(1000);
 
   useEffect(() => {
-    console.log(new Date().toTimeString().toLocaleString("ge-GE"));
+    const startTime = Date.now();
 
-    const myTimeout = setTimeout(() => {
+    let myTimeout = setTimeout(() => {
       setDisplayedTime(new Date());
-    }, 1000);
+      const elapsedTime = new Date() - startTime;
+      const difference = elapsedTime - 1000;
+  
+      setDelay((d) => difference ? d - difference: 1000);
+      setCount((c) => c + 1);
+    }, delay);
 
     return () => {
-      clearTimeout(myTimeout);
+     clearTimeout(myTimeout);
     };
-  }, []);
+  }, [count, delay]);
 
   const handleCheckbox = () => {
     setIsUTC((i) => !i);
-    // setDisplayedTime(Date.now());
   };
+
+  // console.log(new Date().toLocaleString("ge-GE").slice(11, 20), displayedTime);
 
   return (
     <>

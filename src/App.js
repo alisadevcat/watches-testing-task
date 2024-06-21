@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { TimeAndCheckbox } from "./TimeAndCheckbox";
-import { SelectTimesImageChange } from "./SelectTimesImageChange";
+// import { SelectTimesImageChange } from "./SelectTimesImageChange";
 
 export default function App() {
   return (
@@ -9,7 +9,7 @@ export default function App() {
     
       <TimeAndCheckbox />
 
-      <SelectTimesImageChange />
+      {/* <SelectTimesImageChange /> */}
     </div>
   );
 }
