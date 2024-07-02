@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 
 const formatTime = (d, isUtc) => {
   if (isUtc) {
-    return d.toISOString().slice(11, 19);
+    return d.toUTCString().slice(17, 26);
   } else {
-    return d.toLocaleString("ge-GE").slice(11, 20);
+    return d.toLocaleTimeString();
   }
 };
 
 export const TimeAndCheckbox = () => {
-  const [displayedTime, setDisplayedTime] = useState(new Date());
+  const [displayedTime, setDisplayedTime] = useState(() => new Date());
   const [isUTC, setIsUTC] = useState(false);
   const [count, setCount] = useState(0);
   const [delay, setDelay] = useState(1000);
@@ -19,6 +19,7 @@ export const TimeAndCheckbox = () => {
 
     let myTimeout = setTimeout(() => {
       setDisplayedTime(new Date());
+
       const elapsedTime = new Date() - startTime;
       const difference = elapsedTime - 1000;
   
@@ -35,6 +36,7 @@ export const TimeAndCheckbox = () => {
     setIsUTC((i) => !i);
   };
 
+  // console.log(formatTime(displayedTime, isUTC), formatTime(displayedTime, isUTC).endsWith('0'));
   // console.log(new Date().toLocaleString("ge-GE").slice(11, 20), displayedTime);
 
   return (
